@@ -14,7 +14,6 @@ layout: default
       {%- if page.author -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
       {%- endif -%}
-      
       {%- if page.tags -%}
       <span>
         •
@@ -24,10 +23,10 @@ layout: default
         {% endfor %}
       </span>
       {%- endif -%}
-
+      • <a class="post-tag" href="/edit?page={{ page.path | url_encode }}" id="edit">Edit</a>
     </p>
 
-    </header>
+  </header>
 
   <div class="post-content e-content" itemprop="articleBody">
     {{ content }}
