@@ -1,0 +1,150 @@
+---
+layout: default
+---
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css" />
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+<style>
+  .form-control {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 1.5;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    color: #495057;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  .form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem rgb(0 123 255 / 25%);
+  }
+  .form-group {
+    margin-bottom: 0.2rem;
+  }
+  #editor {
+    margin-bottom: 0.5rem;
+  }
+  button#create {
+    display: block;
+    cursor: pointer;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    width: 100%;
+    color: #007bff;
+    background-color: transparent;
+    background-image: none;
+    border-color: #007bff;
+  }
+  button#create:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+</style>
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1>Create New Snippet</h1>
+    <div class="form-group">
+      <input class="form-control" id="title" placeholder="Title" required>
+    </div>
+    <div class="form-group">
+      <input class="form-control" id="tags" placeholder="Tags">
+    </div>
+
+    <div id="editor"></div>
+
+    <button type="button" class="btn btn-outline-primary btn-block" id="create">Create</button>
+  </div>
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fecha/2.3.3/fecha.min.js" integrity="sha512-xEmIJRwf2OmdV1g45PMTbowFtu36xZfT2iYJjudXkjpJOygvgEbPLTRe/WH6+VdZYwOdriQYkyzAKXejAcsaPA==" crossorigin="anonymous"></script>
+<script>
+  document.getElementById('title').focus();
+
+  const editor = new toastui.Editor({
+    el: document.getElementById('editor'),
+    height: '600px',
+    initialEditType: 'markdown',
+    previewStyle: 'vertical'
+  });
+
+  // Artificially add tab index to editor.
+  document.getElementById('tags').onkeydown = function(e) {
+    const charCode = e.which || e.keyCode;
+
+    if (charCode == 9 ) {
+      editor.focus();
+      return false;
+    }
+  };
+
+  function toKebabCase(s) {
+    return s.replace(/\W+/g, ' ').toLowerCase().split(' ').join('-');
+  }
+
+  function openUrl(url) {
+    Object.assign(document.createElement('a'), {
+      target: '_blank',
+      href: url,
+    }).click();
+  }
+
+  document.getElementById('create').onclick = function() {
+    const title = document.getElementById('title').value;
+    const tags = document.getElementById('tags').value;
+    const body = editor.getMarkdown();
+
+    const date = fecha.format(new Date(), "YYYY-MM-DD HH:mm:ss ZZ");
+    const filename = `${date.slice(0, 10)}-${toKebabCase(title)}.md`;
+
+    const filecontent = `---
+layout: post
+title: ${title}
+date: ${date}
+tags: ${tags}
+---
+
+${body}
+`
+
+    console.log(filecontent);
+
+    const message = `Add "${title}"`;
+    const params = new URLSearchParams();
+    params.set('filename', `/_posts/${filename}`);
+    params.set('value', filecontent);
+    params.set('message', message);
+
+    const repo = "{{ site.repository }}";
+    const branch = "{{ site.branch }}";
+    const url = `${repo}/new/${branch}/?${params.toString()}`;
+
+    console.log(url);
+
+    openUrl(url);
+  };
+</script>

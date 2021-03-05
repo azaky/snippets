@@ -1,0 +1,16 @@
+<footer class="site-footer h-card">
+  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <p>
+        &copy; {{ 'now' | date: "%Y" }} by&nbsp; {{- site.author | escape -}} &nbsp;|&nbsp;
+        {{- site.description | escape -}} &nbsp;|
+        <a href="{{ "/feed.xml" | relative_url }}">RSS</a> |
+        <a href="{{ site.repository }}">Github</a>
+      </p>
+    </div>
+
+  </div>
+
+</footer>

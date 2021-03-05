@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snippets</title>
+</head>
+<body>
+  <textarea id="body"></textarea>
+  <input type="text" id="filename"/>
+  <input type="text" id="message"/>
+  <button id="submit">Post</button>
+  <script>
+    const elBody = document.getElementById("body");
+    const elFilename = document.getElementById("filename");
+    const elMessage = document.getElementById("message");
+    const elSubmit = document.getElementById("submit");
+
+    elSubmit.onclick = function() {
+      const repo = 'https://github.com/azaky/snippets';
+      const branch = "main";
+      const filename = elFilename.value;
+      const body = elBody.value;
+      const message = elMessage.value;
+      const params = new URLSearchParams();
+      params.set("filename", filename);
+      params.set("value", body);
+      params.set("message", message);
+
+      const url = `${repo}/new/${branch}?${params.toString()}`;
+      console.log(url);
+
+      Object.assign(document.createElement('a'), {
+        target: '_blank',
+        href: url,
+      }).click();
+    };
+  </script>
+</body>
+</html>
