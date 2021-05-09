@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Free Cache Memory on Ubuntu (WSL)
-date: 2021-05-10 00:44:25 +0700
+date: 2021-05-10 00:57:35 +0700
 tags: wsl ubuntu
 ---
 
@@ -13,4 +13,4 @@ However, on WSL, this may be a problem because the subsystem may not be directly
 sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
 ```
 
-Reference: https://www.kernel.org/doc/Documentation/sysctl/vm.txt
+Reference: [https://www.kernel.org/doc/Documentation/sysctl/vm.txt](https://www.kernel.org/doc/Documentation/sysctl/vm.txt)
