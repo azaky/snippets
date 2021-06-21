@@ -49,6 +49,11 @@ module.exports = async () => {
     database_id: process.env.NOTION_DATABASE_ID,
   });
 
+  const postsRoot = path.join(root, "_posts");
+  if (!fs.existsSync(postsRoot)) {
+    fs.mkdirSync(postsRoot);
+  }
+
   console.log(`Found ${response.results.length} posts from Notion`);
 
   let previousManifests = [];
@@ -57,6 +62,7 @@ module.exports = async () => {
   }
   const manifests = [];
   const allTags = [];
+  const actions = [];
 
   for (const page of response.results) {
     const { id, last_edited_time, created_time } = page;
@@ -143,14 +149,14 @@ module.exports = async () => {
     // Erase previous file first, in case filename changes.
     if (previousData?.filename) {
       try {
-        fs.rmSync(path.join(root, "_posts", previousData.filename));
+        fs.rmSync(path.join(postsRoot, previousData.filename));
       } catch (e) {
         console.warn("Error occurred when removing previous file:", e);
       }
     }
 
     fs.writeFileSync(
-      path.join(root, "_posts", filename),
+      path.join(postsRoot, filename),
       ["---", yaml.dump(frontMatter), "---", "", html].join("\n"),
       "utf8"
     );
@@ -161,6 +167,12 @@ module.exports = async () => {
       filename,
       last_edited_time,
     });
+
+    if (previousData) {
+      actions.push(`Update "${title}"`);
+    } else {
+      actions.push(`Add "${title}"`);
+    }
 
     console.log(`Processing post id = ${id}, title = ${title} done!`);
   }
@@ -187,4 +199,13 @@ module.exports = async () => {
   console.log("Exporting manifest.json ...");
   fs.writeFileSync(manifestFilename, JSON.stringify(manifests), "utf8");
   console.log("Exporting manifest.json done!");
+
+  // A workaround to set commit message.
+  let message = "sync_notion:";
+  if (actions.length === 1) {
+    message = `sync_notion: ${actions[0]}`;
+  } else if (actions.length > 1) {
+    message = [`sync_notion: multiple actions`, ...actions.map(s => `- ${s}`)].join("\n");
+  }
+  fs.writeFileSync(path.join(root, "COMMIT_MESSAGE"), message + "\n", "utf8");
 };
