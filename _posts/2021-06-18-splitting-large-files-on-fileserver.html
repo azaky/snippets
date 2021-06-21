@@ -30,16 +30,20 @@ notion_id: 33612b7198a74a7298d6e6bbe80eb9ec
         </path>
       </svg></a><span class="notion-h-title">Server Side</span>
   </h3>
-  <div class="notion-text">This will split the file(s) into 128 MB chunks. We
-    can use <code class="notion-inline-code">split</code>, which is faster
-    because it will split the files as-is, and on the other hand, <code
-      class="notion-inline-code">zip</code> won&#x27;t make the files any
-    smaller for large binary files. However, the upside of using <code
-      class="notion-inline-code">zip</code> is we can preserve the filenames and
-    the directory structure if there are multiple files and folders involved.
+  <div class="notion-text">This will split the file(s) into 128 MB chunks.
   </div>
   <pre
     class="notion-code"><code class="language-Bash">zip -s 128m parts/output.zip filename [...filenames]</code></pre>
+  <div class="notion-text">We can use <code
+      class="notion-inline-code">split</code>, instead of <code
+      class="notion-inline-code">zip</code>, which is faster because it will
+    split the files as-is without any compression (and therefore a lot of CPU
+    works), and on the other hand, <code class="notion-inline-code">zip</code>
+    won&#x27;t make the files any smaller for large binary files. However, the
+    upside of using <code class="notion-inline-code">zip</code> is we can
+    preserve the filenames and the directory structure if there are multiple
+    files and folders involved.</div>
+  <div class="notion-blank"> </div>
   <div class="notion-text">It&#x27;s also a good idea to have the checksum
     ready, so we can verify the downloaded files on the client-side.</div>
   <pre class="notion-code"><code class="language-Bash">sha256sum parts/* | tee -a parts/sha256sum.txt
@@ -71,4 +75,5 @@ unzip output-full.zip</code></pre>
       class="notion-inline-code">.zip</code> file using 7zip, it will correctly
     take into account all the <code class="notion-inline-code">zxx</code> files.
   </div>
+  <div class="notion-blank"> </div>
 </main>
