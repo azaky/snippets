@@ -4,4 +4,7 @@ require("@babel/register")({
   presets: ["@babel/preset-react"],
 });
 
-require("./sync")();
+require("./sync")().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
