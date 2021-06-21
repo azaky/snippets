@@ -1,0 +1,35 @@
+name: Sync Notion
+
+on:
+  # run every 5 minutes, the shortest allowed interval. too aggressive?
+  schedule:
+  - cron: '0/5 * * * *'
+
+jobs:
+  sync_notion:
+    runs-on: ubuntu-20.04
+    env:
+      NOTION_KEY: ${{ secrets.NOTION_KEY }}
+      NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.17.0'
+    - name: Install Dependencies
+      working-directory: ./scripts/notion
+      run: npm ci
+    - name: Run Sync Notion
+      working-directory: ./scripts/notion
+      run: node index.js
+    - name: Get Commit Message
+      run: |
+        echo "COMMIT_MESSAGE<<EOF" >> $GITHUB_ENV
+        cat ./COMMIT_MESSAGE >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+    - name: Commit changes
+      uses: EndBug/add-and-commit@v7
+      with:
+        default_author: github_actions
+        signoff: true
+        message: ${{ env.COMMIT_MESSAGE }}

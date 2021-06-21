@@ -19,11 +19,13 @@ layout: default
         •
         {% for tag in page.tags %}
           {% capture tag_name %}{{ tag }}{% endcapture %}
-          <a class="post-tag" href="/tags#{{ tag_name }}"><nobr>{{ tag_name }}</nobr></a>
+          <a class="post-tag" href="/tags/{{ tag_name }}"><nobr>{{ tag_name }}</nobr></a>
         {% endfor %}
       </span>
       {%- endif -%}
-      • <a class="post-tag" href="/edit?page={{ page.path | url_encode }}" id="edit">Edit</a>
+      {%- if page.notion_id -%}
+        • <a class="post-tag" href="https://notion.so/{{ page.notion_id | url_encode }}" id="edit">Edit</a>
+      {%- endif -%}
     </p>
 
   </header>
