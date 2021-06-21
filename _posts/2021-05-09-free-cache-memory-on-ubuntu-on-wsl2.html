@@ -21,7 +21,7 @@ notion_id: 59bfd32077bf455092221471455d3f26
     subsystem may not be directly notified if Windows apps need more memory.
     Hence, manual intervention is often needed.</div>
   <pre
-    class="notion-code"><code class="language-Bash">sync &amp;&amp; echo 3 | sudo tee /proc/sys/vm/drop_caches</code></pre>
+    class="notion-code"><code class="language-Bash">sync &amp;&amp; echo 3 | sudo tee /proc/sys/vm/drop_caches &gt; /dev/null</code></pre>
   <div class="notion-text">Reference: <a target="_blank"
       rel="noopener noreferrer" class="notion-link"
       href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">https://www.kernel.org/doc/Documentation/sysctl/vm.txt</a>
