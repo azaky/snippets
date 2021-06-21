@@ -10,7 +10,15 @@ notion_id: 92b573301bdc42c7b3271e733d2f2d5c
 
 ---
 
-<main class="notion light-mode notion-page notion-block-92b57330-1bdc-42c7-b327-1e733d2f2d5c"><div class="notion-viewport"></div><div class="notion-text notion-block-3d9b7fdc-7198-434b-af9e-c5c5b529b7b6">Cheatsheet: <a target="_blank" rel="noopener noreferrer" class="notion-link" href="https://github.com/SimulatedGREG/nginx-cheatsheet">https://github.com/SimulatedGREG/nginx-cheatsheet</a></div><div class="notion-blank notion-block-e8e9ea32-aa16-4afe-9b94-05d5d85c472b"> </div><div class="notion-text notion-block-dec89033-5268-4f2a-bb61-c6f99fab2ea9"><b>Proxy pass inside a path</b></div><pre class="notion-code"><code class="language-Bash">server {
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">Cheatsheet: <a target="_blank"
+      rel="noopener noreferrer" class="notion-link"
+      href="https://github.com/SimulatedGREG/nginx-cheatsheet">https://github.com/SimulatedGREG/nginx-cheatsheet</a>
+  </div>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Proxy pass inside a path</b></div>
+  <pre class="notion-code"><code class="language-Bash">server {
   # normal proxy_pass
   # serve url/uri to 127.0.0.1:8000/uri
   location / {
@@ -24,8 +32,19 @@ notion_id: 92b573301bdc42c7b3271e733d2f2d5c
     # it won&#x27;t work if you don&#x27;t include it!
     proxy_pass http://127.0.0.1:8000/;
   }
-}</code></pre><div class="notion-blank notion-block-1f581a7f-2a20-4b95-a9b5-43b5208794c2"> </div><div class="notion-text notion-block-d2640497-9864-4ab5-8edb-48742ca6c6d2"><b>Send nothing</b></div><div class="notion-text notion-block-5272a6d8-9ba7-488c-bddc-fbc17879a20e">Preferrable method to handle unwanted locations other than 404, is <a target="_blank" rel="noopener noreferrer" class="notion-link" href="https://httpstatuses.com/444">status code 444</a>.</div><div class="notion-text notion-block-271277df-5160-4f2c-a3d9-9f81c9485974">Note: under Cloudflare, this will be seen as 520 to end users.</div><pre class="notion-code"><code class="language-Bash">server {
+}</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Send nothing</b></div>
+  <div class="notion-text">Preferrable method to handle unwanted locations other
+    than 404, is <a target="_blank" rel="noopener noreferrer"
+      class="notion-link" href="https://httpstatuses.com/444">status code
+      444</a>.</div>
+  <div class="notion-text">Note: under Cloudflare, this will be seen as 520 to
+    end users.</div>
+  <pre class="notion-code"><code class="language-Bash">server {
   location / {
     return 444;
   }
-}</code></pre><div class="notion-blank notion-block-c07aef76-8297-4dd9-8403-579a990da9a2"> </div></main>
+}</code></pre>
+  <div class="notion-blank"> </div>
+</main>

@@ -1,0 +1,40 @@
+---
+layout: post
+title: Fix Hanging SSH Connection on WSL2 when VPN is Active
+date: '2021-05-31 18:56:00 +00:00'
+tags:
+  - wsl
+excerpt: Sometimes, my SSH connection stucked right after logging in.
+notion_id: 0ca7c26a8f1540719f8dc9c6c4905132
+
+---
+
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">Sometimes, my SSH connection stucked right after
+    logging in.</div>
+  <pre class="notion-code"><code class="language-Bash">-&gt; % ssh &lt;username&gt;@&lt;host&gt;
+Enter passphrase for key &#x27;/home/azaky/.ssh/id_rsa&#x27;:
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-51-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+... then it hangs here indefinitely</code></pre>
+  <div class="notion-text">SSH-ing from Powershell (using Windows’ OpenSSH) or
+    connecting through VS Code Remote seemed working just fine. And it only
+    happened on some days, on unclear conditions (at first).</div>
+  <div class="notion-text">Then I found this: <a target="_blank"
+      rel="noopener noreferrer" class="notion-link"
+      href="https://github.com/microsoft/WSL/issues/4585#issuecomment-610061194">https://github.com/microsoft/WSL/issues/4585#issuecomment-610061194</a>.
+    Apparently I only encountered the issue when my VPN (on Windows) was active.
+  </div>
+  <div class="notion-text">Running the suggestion quickly resolved the issue:
+  </div>
+  <pre
+    class="notion-code"><code class="language-Bash">sudo ifconfig eth0 mtu 1350</code></pre>
+  <div class="notion-text">However, I had to run it every time I restarted my
+    computer (and having the VPN enabled). TODO: there might be some way to
+    automate this.</div>
+  <div class="notion-blank"> </div>
+</main>

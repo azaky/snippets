@@ -14,6 +14,61 @@ notion_id: 33612b7198a74a7298d6e6bbe80eb9ec
 
 ---
 
-<main class="notion light-mode notion-page notion-block-33612b71-98a7-4a72-98d6-e6bbe80eb9ec"><div class="notion-viewport"></div><div class="notion-text notion-block-5d816fc2-db14-4814-b91c-f119b7936798">When downloading large files with low bandwidth, it is always preferred to download the files in chunks. The idea is so that we can resume the downloads safely when the internet is interrupted in the middle, while not throwing away the bytes that we already downloaded.</div><h3 class="notion-h notion-h3 notion-h-indent-0 notion-block-29b9bd98-00bb-4b91-9273-2893f4930b11" data-id="29b9bd9800bb4b9192732893f4930b11"><div id="29b9bd9800bb4b9192732893f4930b11" class="notion-header-anchor"></div><a class="notion-hash-link" href="#29b9bd9800bb4b9192732893f4930b11" title="Server Side"><svg viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><span class="notion-h-title">Server Side</span></h3><div class="notion-text notion-block-810c25ce-7de9-4a8d-a37c-f939a5dfa875">This will split the file(s) into 128 MB chunks. We can use <code class="notion-inline-code">split</code>, which is faster because it will split the files as-is, and on the other hand, <code class="notion-inline-code">zip</code> won&#x27;t make the files any smaller for large binary files. However, the upside of using <code class="notion-inline-code">zip</code> is we can preserve the filenames and the directory structure if there are multiple files and folders involved.</div><pre class="notion-code"><code class="language-Bash">zip -s 128m parts/output.zip filename [...filenames]</code></pre><div class="notion-text notion-block-2844bed9-8ca9-43e1-8e95-e3a91a5b9cea">It&#x27;s also a good idea to have the checksum ready, so we can verify the downloaded files on the client-side.</div><pre class="notion-code"><code class="language-Bash">sha256sum parts/* | tee -a parts/sha256sum.txt
-sha256sum filename(s) | tee -a parts/sha256sum.txt</code></pre><div class="notion-blank notion-block-8d25e640-4dda-4af0-b10a-05eb6547f48e"> </div><h3 class="notion-h notion-h3 notion-h-indent-0 notion-block-c081665e-2def-490b-a166-6073ad730f98" data-id="c081665e2def490ba1666073ad730f98"><div id="c081665e2def490ba1666073ad730f98" class="notion-header-anchor"></div><a class="notion-hash-link" href="#c081665e2def490ba1666073ad730f98" title="Client Side"><svg viewBox="0 0 16 16" width="16" height="16"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a><span class="notion-h-title">Client Side</span></h3><div class="notion-text notion-block-615f91dd-3725-491b-8f22-5cb3f6f630e9">Now, on the client-side, we will use the power of <code class="notion-inline-code">wget</code>&#x27;s recursive downloads. It is assumed that the above files are served through a file server with directory listing enabled.</div><pre class="notion-code"><code class="language-Bash">wget -r -np -nc &lt;url&gt;</code></pre><div class="notion-text notion-block-91ad96c1-107a-4fb0-8be1-6726d75ca2f4">After the download is finished, we can just <code class="notion-inline-code">cat</code> the files into one big zip file and <code class="notion-inline-code">unzip</code> as usual. There will be warnings, however.</div><pre class="notion-code"><code class="language-Bash">cat output.z* &gt; output-full.zip
-unzip output-full.zip</code></pre><div class="notion-text notion-block-ef3a0aa1-57d5-4a15-b15d-cbe4e26153a6">Another alternative is to unzip the <code class="notion-inline-code">.zip</code> file using 7zip, it will correctly take into account all the <code class="notion-inline-code">zxx</code> files.</div></main>
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">When downloading large files with low bandwidth, it
+    is always preferred to download the files in chunks. The idea is so that we
+    can resume the downloads safely when the internet is interrupted in the
+    middle, while not throwing away the bytes that we already downloaded.</div>
+  <h3 class="notion-h notion-h3 notion-h-indent-0"
+    data-id="29b9bd9800bb4b9192732893f4930b11">
+    <div id="29b9bd9800bb4b9192732893f4930b11" class="notion-header-anchor">
+    </div><a class="notion-hash-link" href="#29b9bd9800bb4b9192732893f4930b11"
+      title="Server Side"><svg viewBox="0 0 16 16" width="16" height="16">
+        <path fill-rule="evenodd"
+          d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+        </path>
+      </svg></a><span class="notion-h-title">Server Side</span>
+  </h3>
+  <div class="notion-text">This will split the file(s) into 128 MB chunks. We
+    can use <code class="notion-inline-code">split</code>, which is faster
+    because it will split the files as-is, and on the other hand, <code
+      class="notion-inline-code">zip</code> won&#x27;t make the files any
+    smaller for large binary files. However, the upside of using <code
+      class="notion-inline-code">zip</code> is we can preserve the filenames and
+    the directory structure if there are multiple files and folders involved.
+  </div>
+  <pre
+    class="notion-code"><code class="language-Bash">zip -s 128m parts/output.zip filename [...filenames]</code></pre>
+  <div class="notion-text">It&#x27;s also a good idea to have the checksum
+    ready, so we can verify the downloaded files on the client-side.</div>
+  <pre class="notion-code"><code class="language-Bash">sha256sum parts/* | tee -a parts/sha256sum.txt
+sha256sum filename(s) | tee -a parts/sha256sum.txt</code></pre>
+  <div class="notion-blank"> </div>
+  <h3 class="notion-h notion-h3 notion-h-indent-0"
+    data-id="c081665e2def490ba1666073ad730f98">
+    <div id="c081665e2def490ba1666073ad730f98" class="notion-header-anchor">
+    </div><a class="notion-hash-link" href="#c081665e2def490ba1666073ad730f98"
+      title="Client Side"><svg viewBox="0 0 16 16" width="16" height="16">
+        <path fill-rule="evenodd"
+          d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z">
+        </path>
+      </svg></a><span class="notion-h-title">Client Side</span>
+  </h3>
+  <div class="notion-text">Now, on the client-side, we will use the power of
+    <code class="notion-inline-code">wget</code>&#x27;s recursive downloads. It
+    is assumed that the above files are served through a file server with
+    directory listing enabled.</div>
+  <pre
+    class="notion-code"><code class="language-Bash">wget -r -np -nc &lt;url&gt;</code></pre>
+  <div class="notion-text">After the download is finished, we can just <code
+      class="notion-inline-code">cat</code> the files into one big zip file and
+    <code class="notion-inline-code">unzip</code> as usual. There will be
+    warnings, however.</div>
+  <pre class="notion-code"><code class="language-Bash">cat output.z* &gt; output-full.zip
+unzip output-full.zip</code></pre>
+  <div class="notion-text">Another alternative is to unzip the <code
+      class="notion-inline-code">.zip</code> file using 7zip, it will correctly
+    take into account all the <code class="notion-inline-code">zxx</code> files.
+  </div>
+</main>
