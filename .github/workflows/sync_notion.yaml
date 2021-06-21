@@ -1,9 +1,10 @@
 name: Sync Notion
 
 on:
-  # run every 5 minutes, the shortest allowed interval. too aggressive?
+  # run every 10 minutes, or on manual trigger
   schedule:
-  - cron: '0/5 * * * *'
+  - cron: '*/10 * * * *'
+  workflow_dispatch:
 
 jobs:
   sync_notion:
