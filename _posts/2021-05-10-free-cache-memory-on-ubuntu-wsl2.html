@@ -1,0 +1,15 @@
+---
+layout: post
+title: Free Cache Memory on Ubuntu (WSL2)
+date: '2021-05-10 00:57:00 +07:00'
+tags:
+  - wsl
+  - ubuntu
+excerpt: >-
+  On standalone Linux OS, this should never be a problem because the OS is smart
+  enough to drop caches whenever other applications need it.
+notion_id: 59bfd32077bf455092221471455d3f26
+
+---
+
+<main class="notion light-mode notion-page notion-block-59bfd320-77bf-4550-9222-1471455d3f26"><div class="notion-viewport"></div><div class="notion-text notion-block-70dda449-c877-47c9-b167-aae0ca576d12">On standalone Linux OS, this should never be a problem because the OS is smart enough to drop caches whenever other applications need it.</div><div class="notion-text notion-block-1b7a7f9e-f522-4e59-b3d5-03e3ce254e82">However, on WSL, this may be a problem because the subsystem may not be directly notified if Windows apps need more memory. Hence, manual intervention is often needed.</div><pre class="notion-code"><code class="language-Bash">sync &amp;&amp; echo 3 | sudo tee /proc/sys/vm/drop_caches</code></pre><div class="notion-text notion-block-3eb97bb2-2173-4515-99d0-74543f425975">Reference: <a target="_blank" rel="noopener noreferrer" class="notion-link" href="https://www.kernel.org/doc/Documentation/sysctl/vm.txt">https://www.kernel.org/doc/Documentation/sysctl/vm.txt</a></div><div class="notion-blank notion-block-0aa367f8-796b-458f-b635-053d71c0b813"> </div></main>
