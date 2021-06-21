@@ -33,7 +33,7 @@ const Equation = (props) => {
 };
 
 const root = path.join(__dirname, "../..");
-const manifestFilename = path.join(root, "manifest.json");
+const postsFilename = path.join(root, "posts.json");
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 const notionXClient = new NotionAPI();
@@ -56,11 +56,11 @@ module.exports = async () => {
 
   console.log(`Found ${response.results.length} posts from Notion`);
 
-  let previousManifests = [];
-  if (fs.existsSync(manifestFilename)) {
-    previousManifests = JSON.parse(fs.readFileSync(manifestFilename, "utf8"));
+  let previousPosts = [];
+  if (fs.existsSync(postsFilename)) {
+    previousPosts = JSON.parse(fs.readFileSync(postsFilename, "utf8"));
   }
-  const manifests = [];
+  const posts = [];
   const allTags = [];
   const actions = [];
 
@@ -77,7 +77,7 @@ module.exports = async () => {
 
     allTags.push(...tags);
 
-    const previousData = previousManifests.find((data) => data.id === id);
+    const previousData = previousPosts.find((data) => data.id === id);
 
     if (previousData) {
       let previousDataValid = true;
@@ -106,7 +106,7 @@ module.exports = async () => {
         fs.existsSync(path.join(root, "_posts", previousData.filename))
       ) {
         console.log(`Last edited time does not change, skipping`);
-        manifests.push(previousData);
+        posts.push(previousData);
         continue;
       }
     }
@@ -161,7 +161,7 @@ module.exports = async () => {
       "utf8"
     );
 
-    manifests.push({
+    posts.push({
       id,
       title,
       filename,
@@ -196,9 +196,9 @@ module.exports = async () => {
   }
   console.log("Processing tags done!");
 
-  console.log("Exporting manifest.json ...");
-  fs.writeFileSync(manifestFilename, JSON.stringify(manifests), "utf8");
-  console.log("Exporting manifest.json done!");
+  console.log("Exporting posts.json ...");
+  fs.writeFileSync(postsFilename, JSON.stringify(posts), "utf8");
+  console.log("Exporting posts.json done!");
 
   // A workaround to set commit message.
   let message = "sync_notion:";

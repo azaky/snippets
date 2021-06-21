@@ -16,7 +16,7 @@ try {
 }
 
 try {
-  fs.rmSync(path.join(root, "manifest.json"));
+  fs.rmSync(path.join(root, "posts.json"));
 } catch (e) {
   console.warn(e);
 }
