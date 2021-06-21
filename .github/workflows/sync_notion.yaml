@@ -21,7 +21,7 @@ jobs:
       run: npm ci
     - name: Run Sync Notion
       working-directory: ./scripts/notion
-      run: node index.js
+      run: npm run sync
     - name: Get Commit Message
       run: |
         echo "COMMIT_MESSAGE<<EOF" >> $GITHUB_ENV
