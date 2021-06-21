@@ -1,0 +1,19 @@
+---
+layout: post
+title: Fix Hanging SSH Connection on WSL2 when VPN is Active
+date: '2021-06-01 01:56:00 +07:00'
+tags:
+  - wsl
+excerpt: Sometimes, my SSH connection stucked right after logging in.
+notion_id: 0ca7c26a8f1540719f8dc9c6c4905132
+
+---
+
+<main class="notion light-mode notion-page notion-block-0ca7c26a-8f15-4071-9f8d-c9c6c4905132"><div class="notion-viewport"></div><div class="notion-text notion-block-55aca000-1a8d-463b-a88c-afa0ef172582">Sometimes, my SSH connection stucked right after logging in.</div><pre class="notion-code"><code class="language-Bash">-&gt; % ssh &lt;username&gt;@&lt;host&gt;
+Enter passphrase for key &#x27;/home/azaky/.ssh/id_rsa&#x27;:
+Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-51-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+... then it hangs here indefinitely</code></pre><div class="notion-text notion-block-669e1c71-e51a-4e7a-879c-9c5167ac7a4e">SSH-ing from Powershell (using Windows’ OpenSSH) or connecting through VS Code Remote seemed working just fine. And it only happened on some days, on unclear conditions (at first).</div><div class="notion-text notion-block-67e20d40-1936-4564-b887-2305e24ba4bd">Then I found this: <a target="_blank" rel="noopener noreferrer" class="notion-link" href="https://github.com/microsoft/WSL/issues/4585#issuecomment-610061194">https://github.com/microsoft/WSL/issues/4585#issuecomment-610061194</a>. Apparently I only encountered the issue when my VPN (on Windows) was active.</div><div class="notion-text notion-block-e79d5de7-2850-40f0-aa74-cf695e652e39">Running the suggestion quickly resolved the issue:</div><pre class="notion-code"><code class="language-Bash">sudo ifconfig eth0 mtu 1350</code></pre><div class="notion-text notion-block-7bd9fe9d-4183-4914-babc-1770ed3d2525">However, I had to run it every time I restarted my computer (and having the VPN enabled). TODO: there might be some way to automate this.</div><div class="notion-blank notion-block-5cb4a6d2-b527-41bf-b109-8a1ff5374cff"> </div></main>

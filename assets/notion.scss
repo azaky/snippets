@@ -1,0 +1,20 @@
+
+.notion-text {
+  margin-bottom: 15px;
+}
+
+// Until we have transformed the hash link into pretty urls,
+// let's just hide them.
+.notion-hash-link {
+  display: none;
+}
+
+.code-toolbar {
+  .toolbar {
+    .toolbar-item {
+      &:hover, button {
+        cursor: pointer;
+      }
+    }
+  }
+}
