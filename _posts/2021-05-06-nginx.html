@@ -19,19 +19,19 @@ notion_id: 92b573301bdc42c7b3271e733d2f2d5c
   <div class="notion-blank"> </div>
   <div class="notion-text"><b>Proxy pass inside a path</b></div>
   <pre class="notion-code"><code class="language-Bash">server {
-  # normal proxy_pass
-  # serve url/uri to 127.0.0.1:8000/uri
-  location / {
-    proxy_pass http://127.0.0.1:8000/;
-  }
+	# normal proxy_pass
+	# serve url/uri to 127.0.0.1:8000/uri
+	location / {
+		proxy_pass http://127.0.0.1:8000/;
+	}
 
-  # proxy_pass inside a path
+	# proxy_pass inside a path
   # serve url/path/uri to 127.0.0.1:8000/uri
-  location /path/ {
-    # trailing / here is important!
-    # it won&#x27;t work if you don&#x27;t include it!
-    proxy_pass http://127.0.0.1:8000/;
-  }
+	location /path/ {
+		# trailing / here is important!
+		# it won&#x27;t work if you don&#x27;t include it!
+		proxy_pass http://127.0.0.1:8000/;
+	}
 }</code></pre>
   <div class="notion-blank"> </div>
   <div class="notion-text"><b>Send nothing</b></div>
@@ -42,9 +42,16 @@ notion_id: 92b573301bdc42c7b3271e733d2f2d5c
   <div class="notion-text">Note: under Cloudflare, this will be seen as 520 to
     end users.</div>
   <pre class="notion-code"><code class="language-Bash">server {
-  location / {
-    return 444;
-  }
+	location / {
+		return 444;
+	}
+}</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Disable 404 errors on favicon.ico</b></div>
+  <pre class="notion-code"><code class="language-Bash">location = /favicon.ico {
+	log_not_found off;
+	access_log off;
+	return 404;
 }</code></pre>
   <div class="notion-blank"> </div>
 </main>
