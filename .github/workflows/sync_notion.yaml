@@ -26,7 +26,7 @@ jobs:
     - name: Get Commit Message
       run: |
         echo "COMMIT_MESSAGE<<EOF" >> $GITHUB_ENV
-        cat ./COMMIT_MESSAGE >> $GITHUB_ENV
+        if [ -f ./COMMIT_MESSAGE ]; then cat ./COMMIT_MESSAGE >> $GITHUB_ENV; else echo "" >> $GITHUB_ENV; fi
         echo "EOF" >> $GITHUB_ENV
     - name: Commit changes
       uses: EndBug/add-and-commit@v7
