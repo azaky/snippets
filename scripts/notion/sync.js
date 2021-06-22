@@ -88,7 +88,7 @@ module.exports = async () => {
 
     console.log(`Processing post id = ${id}, title = ${title}`);
 
-    tags.forEach(tag => uniqueTags.add(tag));
+    tags.forEach((tag) => uniqueTags.add(tag));
 
     const previousData = previousPosts.find((data) => data.id === id);
 
@@ -106,6 +106,10 @@ module.exports = async () => {
         console.warn(`Warning: previous data exists but filename is missing.`);
         previousDataValid = false;
       }
+      if (!previousData.date) {
+        console.warn(`Warning: previous data exists but date is missing.`);
+        previousDataValid = false;
+      }
       if (!previousData.last_edited_time) {
         console.warn(
           `Warning: previous data exists but last_edited_time is missing.`
@@ -119,7 +123,7 @@ module.exports = async () => {
         fs.existsSync(path.join(root, "_posts", previousData.filename))
       ) {
         console.log(`Last edited time does not change, skipping`);
-        posts.push(previousData);
+        posts.push({ ...previousData, date: new Date(previousData.date) });
         continue;
       }
     }
@@ -237,7 +241,7 @@ module.exports = async () => {
   console.log("Processing tags done!");
 
   console.log("Exporting posts.json ...");
-  posts.sort((a, b) => a.date < b.date ? -1 : 1);
+  posts.sort((a, b) => a.date.getTime() - b.date.getTime());
   fs.writeFileSync(
     postsFilename,
     JSON.stringify({ last_sync: now, posts }, null, 2),
