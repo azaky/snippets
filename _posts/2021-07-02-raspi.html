@@ -4,18 +4,14 @@ title: Raspi
 date: '2021-07-02 00:00:00 +00:00'
 tags:
   - raspberry-pi
-excerpt: Monitoring temperature
+excerpt: Non-interactive mode for raspi-config
 notion_id: af64b57408cb4f2a93bd92a1076e92cd
 
 ---
 
 <main class="notion light-mode notion-page">
   <div class="notion-viewport"></div>
-  <div class="notion-text"><b>Monitoring temperature</b></div>
-  <pre
-    class="notion-code"><code class="language-Bash">vcgencmd measure_temp</code></pre>
-  <div class="notion-blank"> </div>
-  <div class="notion-text"><b>Noninteractive mode for </b><b><code
+  <div class="notion-text"><b>Non-interactive mode for </b><b><code
         class="notion-inline-code">raspi-config</code></b></div>
   <pre class="notion-code"><code class="language-Bash"># set timezone and localization
 raspi-config nonint do_change_timezone Asia/Jakarta
@@ -33,15 +29,23 @@ raspi-config nonint do_resolution 2 16</code></pre>
       href="https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config">its
       source code</a>.</div>
   <div class="notion-blank"> </div>
-  <div class="notion-text">This enables completely automated first time setup.
-  </div>
+  <div class="notion-text">This enables <a target="_blank"
+      rel="noopener noreferrer" class="notion-link"
+      href="https://gist.github.com/azaky/a1c65aea1f6eac5271f093bcdc36ec3a">completely
+      automated first time setup</a>.</div>
   <div class="notion-blank"> </div>
-  <div class="notion-text"><b>Remove welcome message and default password
-      warning</b></div>
-  <pre class="notion-code"><code class="language-Bash"># Remove welcome message
-sudo rm /etc/xdg/autostart/piwiz.desktop
+  <div class="notion-text"><b>Remove welcome message</b></div>
+  <pre class="notion-code"><code class="language-Bash">sudo rm /etc/xdg/autostart/piwiz.desktop
 
 # Remove default password warning
-sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh
+</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Remove default password warning</b></div>
+  <pre class="notion-code"><code class="language-Bash">sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh
 sudo rm /etc/profile.d/sshpwd.sh</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Monitoring temperature</b></div>
+  <pre
+    class="notion-code"><code class="language-Bash">vcgencmd measure_temp</code></pre>
+  <div class="notion-blank"> </div>
 </main>
