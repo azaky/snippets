@@ -1,0 +1,47 @@
+---
+layout: post
+title: Raspi
+date: '2021-07-02 00:00:00 +00:00'
+tags:
+  - raspberry-pi
+excerpt: Monitoring temperature
+notion_id: af64b57408cb4f2a93bd92a1076e92cd
+
+---
+
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text"><b>Monitoring temperature</b></div>
+  <pre
+    class="notion-code"><code class="language-Bash">vcgencmd measure_temp</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Noninteractive mode for </b><b><code
+        class="notion-inline-code">raspi-config</code></b></div>
+  <pre class="notion-code"><code class="language-Bash"># set timezone and localization
+raspi-config nonint do_change_timezone Asia/Jakarta
+raspi-config nonint do_change_locale en_US.UTF-8
+
+# enable vnc
+raspi-config nonint do_vnc 0
+
+# change resolution
+# DMT Mode 16 1024x768 60Hz 4:3
+raspi-config nonint do_resolution 2 16</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">For the complete &quot;documentation&quot;, we have
+    to dig in <a target="_blank" rel="noopener noreferrer" class="notion-link"
+      href="https://github.com/RPi-Distro/raspi-config/blob/master/raspi-config">its
+      source code</a>.</div>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">This enables completely automated first time setup.
+  </div>
+  <div class="notion-blank"> </div>
+  <div class="notion-text"><b>Remove welcome message and default password
+      warning</b></div>
+  <pre class="notion-code"><code class="language-Bash"># Remove welcome message
+sudo rm /etc/xdg/autostart/piwiz.desktop
+
+# Remove default password warning
+sudo rm /etc/xdg/lxsession/LXDE-pi/sshpwd.sh
+sudo rm /etc/profile.d/sshpwd.sh</code></pre>
+</main>
