@@ -56,11 +56,24 @@ wide_links=yes</code></pre>
     things here:</div>
   <ul class="notion-list notion-list-disc">
     <li>We want to start <code class="notion-inline-code">minidlna</code> as
-      <code class="notion-inline-code">root</code> by default.</li>
+      <code class="notion-inline-code">root</code> by default. Here, we change
+      <code class="notion-inline-code">User</code> and <code
+        class="notion-inline-code">Group</code>.</li>
   </ul>
   <ul class="notion-list notion-list-disc">
     <li>We want to start <code class="notion-inline-code">minidlna</code> only
-      after our USB stick is mounted.</li>
+      after our USB flash drive is mounted. To accomplish this, we include a
+      bash script in <code class="notion-inline-code">ExecStartPre</code> that
+      will wait until our symlink, <code
+        class="notion-inline-code">/var/lib/minidlna</code>, exists. We need
+      this check because the USB is not mounted right away on boot. There is <a
+        target="_blank" rel="noopener noreferrer" class="notion-link"
+        href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.path.5.html"><code
+          class="notion-inline-code">systemd.path</code></a><a target="_blank"
+        rel="noopener noreferrer" class="notion-link"
+        href="http://manpages.ubuntu.com/manpages/bionic/man5/systemd.path.5.html">
+        unit</a> that is supposed to be used for waiting files or directory like
+      this, but somehow I could not manage to make it work.</li>
   </ul>
   <ul class="notion-list notion-list-disc">
     <li>We want <code class="notion-inline-code">minidlna</code> to refresh the
@@ -69,31 +82,27 @@ wide_links=yes</code></pre>
     </li>
   </ul>
   <pre class="notion-code"><code class="language-Bash">[Unit]
-...
-#After= remove this line. We will take care of this next.
-...
+Description=MiniDLNA lightweight DLNA/UPnP-AV server
+Documentation=man:minidlnad(1) man:minidlna.conf(5)
+After=network.target
 
 [Service]
-...
+Type=forking
 User=root
 Group=root
-...
-ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $DAEMON_OPTS
-...</code></pre>
-  <div class="notion-blank"> </div>
-  <div class="notion-blank"> </div>
-  <div class="notion-blank"> </div>
-  <pre class="notion-code"><code class="language-Bash">/lib/systemd/system/minidlna.path
-[Unit]
-Description=Watch /var/lib/minidlna and activate minidlna.service
 
-[Path]
-DirectoryNotEmpty=/var/lib/minidlna
+Environment=CONFIGFILE=/etc/minidlna.conf
+Environment=DAEMON_OPTS=-r
+EnvironmentFile=-/etc/default/minidlna
+
+RuntimeDirectory=minidlna
+LogsDirectory=minidlna
+PIDFile=/run/minidlna/minidlna.pid
+ExecStartPre=/usr/bin/bash -c &#x27;until [ -e /var/lib/minidlna ]; do sleep 1; done&#x27;
+ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $DAEMON_OPTS
 
 [Install]
-WantedBy=multi-user.target
-
-sudo systemctl preset minidlna.path</code></pre>
+WantedBy=multi-user.target</code></pre>
   <div class="notion-blank"> </div>
   <div class="notion-text">Finally, we just have to reload the service.</div>
   <pre class="notion-code"><code class="language-Bash">sudo systemctl daemon-reload
