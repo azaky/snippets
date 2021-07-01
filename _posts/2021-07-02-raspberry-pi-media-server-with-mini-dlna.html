@@ -6,8 +6,9 @@ tags:
   - raspberry-pi
 excerpt: >-
   One of the things that we can do with Raspberry Pi is to serve media (movies,
-  videos, photos) via the home network. That way, we can watch the same content
-  . We can do that with minidlna.
+  videos, photos) via the home network. That way, we can watch content on
+  different devices (PCs, smart TVs, and smartphones) from a centralized source.
+  We can do that with minidlna.
 notion_id: a94a5d2c20d14743b1c65f344b5c4c17
 
 ---
@@ -16,7 +17,8 @@ notion_id: a94a5d2c20d14743b1c65f344b5c4c17
   <div class="notion-viewport"></div>
   <div class="notion-text">One of the things that we can do with Raspberry Pi is
     to serve media (movies, videos, photos) via the home network. That way, we
-    can watch the same content . We can do that with <a target="_blank"
+    can watch content on different devices (PCs, smart TVs, and smartphones)
+    from a centralized source. We can do that with <a target="_blank"
       rel="noopener noreferrer" class="notion-link"
       href="https://help.ubuntu.com/community/MiniDLNA"><code
         class="notion-inline-code">minidlna</code></a>.</div>
@@ -48,14 +50,17 @@ inotify=yes
 ...
 wide_links=yes</code></pre>
   <div class="notion-blank"> </div>
-  <div class="notion-text">Then we want <code
-      class="notion-inline-code">minidlna</code> to start as <code
-      class="notion-inline-code">root</code> by default. In order to change
-    this, we have to edit the service file. On mine, it was located at <code
-      class="notion-inline-code">/lib/systemd/system/mindlna.service</code>. Two
+  <div class="notion-text">Then we edit the service file. On mine, it was
+    located at <code
+      class="notion-inline-code">/lib/systemd/system/mindlna.service</code>. Few
     things here:</div>
   <ul class="notion-list notion-list-disc">
-    <li>Set user and group to <code class="notion-inline-code">root</code>.</li>
+    <li>We want to start <code class="notion-inline-code">minidlna</code> as
+      <code class="notion-inline-code">root</code> by default.</li>
+  </ul>
+  <ul class="notion-list notion-list-disc">
+    <li>We want to start <code class="notion-inline-code">minidlna</code> only
+      after our USB stick is mounted.</li>
   </ul>
   <ul class="notion-list notion-list-disc">
     <li>We want <code class="notion-inline-code">minidlna</code> to refresh the
@@ -63,17 +68,33 @@ wide_links=yes</code></pre>
       accomplished by adding <code class="notion-inline-code">-R</code> options.
     </li>
   </ul>
-  <pre class="notion-code"><code class="language-Bash">...
+  <pre class="notion-code"><code class="language-Bash">[Unit]
+...
+After=dev-disk-by\x2duuid-&lt;ID&gt;.device
+...
+
 [Service]
-Type=forking
+...
 User=root
 Group=root
 ...
 ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $DAEMON_OPTS
 ...</code></pre>
   <div class="notion-blank"> </div>
+  <div class="notion-text">To get the value to put in <code
+      class="notion-inline-code">After=</code>, we can run:</div>
+  <pre
+    class="notion-code"><code class="language-Bash">systemctl list-units -a -t device | grep SanDisk</code></pre>
+  <div class="notion-text">Replace &quot;SanDisk&quot; by your USB brand or name
+    (or omit <code class="notion-inline-code">| grep</code> entirely to see all
+    devices).</div>
+  <div class="notion-blank"> </div>
   <div class="notion-text">Finally, we just have to reload the service.</div>
   <pre class="notion-code"><code class="language-Bash">sudo systemctl daemon-reload
 sudo systemctl restart minidlna</code></pre>
   <div class="notion-blank"> </div>
+  <div class="notion-text">Our shared folder will be visible in our devices as
+    &quot;raspberry&quot; now (or anything that&#x27;s set on <code
+      class="notion-inline-code">friendly_name</code>. On Android, we can use
+    VLC media player to browse files via DLNA.</div>
 </main>
