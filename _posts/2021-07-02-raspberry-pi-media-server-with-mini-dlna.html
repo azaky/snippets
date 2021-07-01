@@ -81,6 +81,8 @@ Group=root
 ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $DAEMON_OPTS
 ...</code></pre>
   <div class="notion-blank"> </div>
+  <div class="notion-blank"> </div>
+  <div class="notion-blank"> </div>
   <div class="notion-text">To get the value to put in <code
       class="notion-inline-code">After=</code>, we can run:</div>
   <pre
@@ -88,6 +90,16 @@ ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $D
   <div class="notion-text">Replace &quot;SanDisk&quot; by your USB brand or name
     (or omit <code class="notion-inline-code">| grep</code> entirely to see all
     devices).</div>
+  <div class="notion-blank"> </div>
+  <pre class="notion-code"><code class="language-Bash">/lib/systemd/system/minidlna.path
+[Unit]
+Description=Watch /var/lib/minidlna and activate minidlna.service
+
+[Path]
+DirectoryNotEmpty=/var/lib/minidlna
+
+[Install]
+WantedBy=multi-user.target</code></pre>
   <div class="notion-blank"> </div>
   <div class="notion-text">Finally, we just have to reload the service.</div>
   <pre class="notion-code"><code class="language-Bash">sudo systemctl daemon-reload
