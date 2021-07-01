@@ -70,7 +70,7 @@ wide_links=yes</code></pre>
   </ul>
   <pre class="notion-code"><code class="language-Bash">[Unit]
 ...
-After=dev-disk-by\x2duuid-&lt;ID&gt;.device
+#After= remove this line. We will take care of this next.
 ...
 
 [Service]
@@ -83,14 +83,6 @@ ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $D
   <div class="notion-blank"> </div>
   <div class="notion-blank"> </div>
   <div class="notion-blank"> </div>
-  <div class="notion-text">To get the value to put in <code
-      class="notion-inline-code">After=</code>, we can run:</div>
-  <pre
-    class="notion-code"><code class="language-Bash">systemctl list-units -a -t device | grep SanDisk</code></pre>
-  <div class="notion-text">Replace &quot;SanDisk&quot; by your USB brand or name
-    (or omit <code class="notion-inline-code">| grep</code> entirely to see all
-    devices).</div>
-  <div class="notion-blank"> </div>
   <pre class="notion-code"><code class="language-Bash">/lib/systemd/system/minidlna.path
 [Unit]
 Description=Watch /var/lib/minidlna and activate minidlna.service
@@ -99,7 +91,9 @@ Description=Watch /var/lib/minidlna and activate minidlna.service
 DirectoryNotEmpty=/var/lib/minidlna
 
 [Install]
-WantedBy=multi-user.target</code></pre>
+WantedBy=multi-user.target
+
+sudo systemctl preset minidlna.path</code></pre>
   <div class="notion-blank"> </div>
   <div class="notion-text">Finally, we just have to reload the service.</div>
   <pre class="notion-code"><code class="language-Bash">sudo systemctl daemon-reload
