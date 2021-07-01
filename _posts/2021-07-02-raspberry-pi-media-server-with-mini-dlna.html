@@ -1,0 +1,79 @@
+---
+layout: post
+title: Raspberry Pi Media Server with Mini DLNA
+date: '2021-07-02 00:00:00 +00:00'
+tags:
+  - raspberry-pi
+excerpt: >-
+  One of the things that we can do with Raspberry Pi is to serve media (movies,
+  videos, photos) via the home network. That way, we can watch the same content
+  . We can do that with minidlna.
+notion_id: a94a5d2c20d14743b1c65f344b5c4c17
+
+---
+
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">One of the things that we can do with Raspberry Pi is
+    to serve media (movies, videos, photos) via the home network. That way, we
+    can watch the same content . We can do that with <a target="_blank"
+      rel="noopener noreferrer" class="notion-link"
+      href="https://help.ubuntu.com/community/MiniDLNA"><code
+        class="notion-inline-code">minidlna</code></a>.</div>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">First, install <code
+      class="notion-inline-code">minidlna</code>:</div>
+  <pre
+    class="notion-code"><code class="language-Bash">sudo apt install minidlna</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">We want to make a symbolic link from our shared
+    folder to <code class="notion-inline-code">/var/lib/minidlna</code>, so if
+    we want to change the shared folder later, we can do it without changing the
+    config file.</div>
+  <div class="notion-text">On my case, I want to share a folder on a USB flash
+    drive. We can do so by:</div>
+  <pre
+    class="notion-code"><code class="language-Bash">sudo ln -sf /media/pi/&lt;Device-ID&gt;/&lt;Shared-Folder&gt; /var/lib/minidlna</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Then edit the configuration file with <code
+      class="notion-inline-code">sudo vim /etc/minidlna.conf</code>:</div>
+  <pre class="notion-code"><code class="language-Bash">...
+media_dir=/var/lib/minidlna
+...
+db_dir=/home/pi/.minidlna
+...
+friendly_name=raspberry
+...
+inotify=yes
+...
+wide_links=yes</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Then we want <code
+      class="notion-inline-code">minidlna</code> to start as <code
+      class="notion-inline-code">root</code> by default. In order to change
+    this, we have to edit the service file. On mine, it was located at <code
+      class="notion-inline-code">/lib/systemd/system/mindlna.service</code>. Two
+    things here:</div>
+  <ul class="notion-list notion-list-disc">
+    <li>Set user and group to <code class="notion-inline-code">root</code>.</li>
+  </ul>
+  <ul class="notion-list notion-list-disc">
+    <li>We want <code class="notion-inline-code">minidlna</code> to refresh the
+      database on boot (and when the service is restarted). This can be
+      accomplished by adding <code class="notion-inline-code">-R</code> options.
+    </li>
+  </ul>
+  <pre class="notion-code"><code class="language-Bash">...
+[Service]
+Type=forking
+User=root
+Group=root
+...
+ExecStart=/usr/sbin/minidlnad -R -f $CONFIGFILE -P /run/minidlna/minidlna.pid $DAEMON_OPTS
+...</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Finally, we just have to reload the service.</div>
+  <pre class="notion-code"><code class="language-Bash">sudo systemctl daemon-reload
+sudo systemctl restart minidlna</code></pre>
+  <div class="notion-blank"> </div>
+</main>

@@ -1,5 +1,5 @@
 {
-  "last_sync": "2021-06-22T13:13:34.054Z",
+  "last_sync": "2021-07-01T18:31:51.898Z",
   "posts": [
     {
       "id": "97f6ce61-f214-4a6a-970c-a1f4cb31048e",
@@ -35,6 +35,13 @@
       "filename": "2021-06-18-splitting-large-files-on-fileserver.html",
       "date": "2021-06-18T17:24:00.000Z",
       "last_edited_time": "2021-06-21T23:24:00.000Z"
+    },
+    {
+      "id": "a94a5d2c-20d1-4743-b1c6-5f344b5c4c17",
+      "title": "Raspberry Pi Media Server with Mini DLNA",
+      "filename": "2021-07-02-raspberry-pi-media-server-with-mini-dlna.html",
+      "date": "2021-07-02T00:00:00.000Z",
+      "last_edited_time": "2021-07-01T18:31:00.000Z"
     }
   ]
 }
