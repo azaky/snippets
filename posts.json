@@ -1,5 +1,5 @@
 {
-  "last_sync": "2022-04-06T13:41:59.274Z",
+  "last_sync": "2022-04-06T13:45:29.567Z",
   "posts": [
     {
       "id": "97f6ce61-f214-4a6a-970c-a1f4cb31048e",
@@ -52,10 +52,10 @@
     },
     {
       "id": "23e1a337-9002-4e11-ad8e-2e9cd223fb58",
-      "title": "Installing ",
-      "filename": "2022-04-06-installing.html",
+      "title": "Installing Fancy Index Module on Nginx",
+      "filename": "2022-04-06-installing-fancy-index-module-on-nginx.html",
       "date": "2022-04-06T00:00:00.000Z",
-      "last_edited_time": "2022-04-06T13:40:00.000Z"
+      "last_edited_time": "2022-04-06T13:44:00.000Z"
     }
   ]
 }
