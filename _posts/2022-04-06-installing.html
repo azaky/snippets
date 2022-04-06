@@ -1,0 +1,77 @@
+---
+layout: post
+title: 'Installing '
+date: '2022-04-06 00:00:00 +00:00'
+tags:
+  - nginx
+  - webserver
+excerpt: >-
+  First, get the Nginx source code. The version must match exactly what we have
+  on the system.
+notion_id: 23e1a33790024e11ad8e2e9cd223fb58
+
+---
+
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">First, get the Nginx source code. The version must
+    match exactly what we have on the system.</div>
+  <pre class="notion-code"><code class="language-Bash">nginx -v
+nginx version: nginx/1.18.0 (Ubuntu)</code></pre>
+  <pre class="notion-code"><code class="language-Bash">wget https://nginx.org/download/nginx-1.18.0.tar.gz
+tar xzvf nginx-1.18.0.tar.gz</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Then get the fancyindex module.</div>
+  <pre
+    class="notion-code"><code class="language-Bash">git clone https://github.com/aperezdc/ngx-fancyindex.git</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">We need to configure Nginx with exact arguments as
+    what we have. Run <code class="notion-inline-code">nginx -V</code> to get
+    the arguments. Then, run the following:</div>
+  <pre
+    class="notion-code"><code class="language-Bash">cd nginx-1.18.0
+./configure [... args from nginx -V] --add-dynamic-module=../ngx-fancyindex</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Depending on the system configuration, it may fail
+    several times. I needed to install the following in order to succeed. You
+    may need to install a different set of modules.</div>
+  <pre
+    class="notion-code"><code class="language-Bash">sudo apt install -y libpcre3-dev libxslt-dev libgd-dev libgeoip-dev</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">After the <code
+      class="notion-inline-code">configure</code> completes without errors, run
+    the following:</div>
+  <pre class="notion-code"><code class="language-Bash">make modules</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">It will generate <code
+      class="notion-inline-code">*.so</code> files in the <code
+      class="notion-inline-code">objs</code> folder. Copy our newly built module
+    to our Nginx installation folder:</div>
+  <pre
+    class="notion-code"><code class="language-Bash">sudo cp objs/ngx_http_fancyindex_module.so /usr/share/nginx/modules</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Lastly, add the following in <code
+      class="notion-inline-code">/etc/nginx/nginx.conf</code></div>
+  <pre
+    class="notion-code"><code class="language-Plain Text">load_module /usr/share/nginx/modules/ngx_http_fancyindex_module.so;</code></pre>
+  <figcaption class="notion-asset-caption">/etc/nginx/nginx.conf</figcaption>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Now, we can use <code
+      class="notion-inline-code">fancyindex</code> directives on our sites.
+    Replace <code class="notion-inline-code">autoindex</code> directives with
+    <code class="notion-inline-code">fancyindex</code>.</div>
+  <pre class="notion-code"><code class="language-Plain Text">server {
+        server_name files.azaky.io;
+
+        location / {
+                # autoindex on;
+                fancyindex on;
+                fancyindex_exact_size off;
+        }
+}</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">Reload Nginx with our latest configuration.</div>
+  <pre class="notion-code"><code class="language-Bash">sudo nginx -t
+sudo nginx -s reload</code></pre>
+  <div class="notion-blank"> </div>
+</main>
