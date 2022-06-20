@@ -1,0 +1,30 @@
+---
+layout: post
+title: Bytes to String
+date: '2022-06-20 00:00:00 +00:00'
+tags:
+  - python
+excerpt: >-
+  Sometimes in Golang (or any language), we often unintentionally print/debug an
+  array of bytes as it is, instead of its string representation. You may have
+  seen something like this:
+notion_id: e2b727b9b89043e7bd1cc0cf2c389233
+
+---
+
+<main class="notion light-mode notion-page">
+  <div class="notion-viewport"></div>
+  <div class="notion-text">Sometimes in Golang (or any language), we often
+    unintentionally print/debug an array of bytes as it is, instead of its
+    string representation. You may have seen something like this:</div>
+  <div class="notion-blank"> </div>
+  <pre
+    class="notion-code"><code class="language-Bash">error unmarshaling, body: [123 34 99 111 100 101 34 58 34 79 75 34 44 34 109 101 115 115 97 103 101 34 58 34 79 75 34 125]</code></pre>
+  <div class="notion-blank"> </div>
+  <div class="notion-text">If we want to quickly find out what it is, we can use
+    this Python script:</div>
+  <div class="notion-blank"> </div>
+  <pre
+    class="notion-code"><code class="language-Bash">python3 -c &#x27;import re; print(&quot;&quot;.join([chr(int(x)) for x in re.findall(&quot;\d+&quot;, input(&quot;array of bytes: &quot;))]))&#x27;</code></pre>
+  <div class="notion-blank"> </div>
+</main>

@@ -1,5 +1,5 @@
 {
-  "last_sync": "2022-04-06T13:45:29.567Z",
+  "last_sync": "2022-06-20T12:07:22.620Z",
   "posts": [
     {
       "id": "97f6ce61-f214-4a6a-970c-a1f4cb31048e",
@@ -56,6 +56,13 @@
       "filename": "2022-04-06-installing-fancy-index-module-on-nginx.html",
       "date": "2022-04-06T00:00:00.000Z",
       "last_edited_time": "2022-04-06T13:44:00.000Z"
+    },
+    {
+      "id": "e2b727b9-b890-43e7-bd1c-c0cf2c389233",
+      "title": "Bytes to String",
+      "filename": "2022-06-20-bytes-to-string.html",
+      "date": "2022-06-20T00:00:00.000Z",
+      "last_edited_time": "2022-06-20T12:04:00.000Z"
     }
   ]
 }
